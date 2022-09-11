@@ -23,12 +23,22 @@ public class BlackJackHand extends Hand {
 //		return sum;
 		
 	}
-	public boolean isBlackJack() {
+	public boolean isBlackJack(int[]playerTotal) {
 		boolean isBj = false;
+		int[] playTot = playerTotal;
+		if(playTot[0] == 21) {
+			isBj = true;
+			System.out.println("BlackJack!");
+		}
 		return isBj;
 	}
-	public boolean isBust() {
+	public boolean isBust(int[] playerTotal) {
 		boolean isBust = false;
+		int[] playTot = playerTotal;
+		if(playTot[0] > 21) {
+			isBust = true;
+			System.out.println("Bust!");
+		}
 		return isBust;
 	}
 	
