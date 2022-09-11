@@ -14,12 +14,15 @@ public class Player {
 	public String getName() {
 		return name;
 	}
+	public void addCard(Card card) {
+		hand.addCard(card);
+	}
+	public Hand getHand() {
+		return hand;
+	}
 	@Override
 	public String toString() {
 		return "Player [name=" + name + "]";
-	}
-	public void addCard(Card card) {
-		hand.addCard(card);
 	}
 	
 	

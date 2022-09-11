@@ -19,6 +19,12 @@ public abstract class Hand {
 	public void clear() {
 		
 	}
+
+	@Override
+	public String toString() {
+		return "Hand [hand=" + hand + "]";
+	}
+	
 	
 
 }
