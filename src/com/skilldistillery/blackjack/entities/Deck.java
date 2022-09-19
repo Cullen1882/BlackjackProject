@@ -13,7 +13,7 @@ public class Deck {
 	}
 	
 	public List<Card> createDeck(){
-		List<Card> deck = new ArrayList<>(52);
+		List<Card> deck = new ArrayList<>();
 		for (Suit s : Suit.values()) {
 			for (Rank r : Rank.values()) {
 				deck.add(new Card(r, s));

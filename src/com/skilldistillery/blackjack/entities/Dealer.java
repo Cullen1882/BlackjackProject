@@ -8,6 +8,11 @@ public class Dealer extends Player{
 	}
 	public void dealCard(Player player) {
 		player.addCard(deck.dealCard());
+		
+	}
+	public Deck getDeck() {
+		return deck;
 	}
 
 }
+//getter for deck

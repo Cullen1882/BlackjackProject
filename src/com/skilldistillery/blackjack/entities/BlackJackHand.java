@@ -2,6 +2,7 @@ package com.skilldistillery.blackjack.entities;
 
 public class BlackJackHand extends Hand {
 
+
 	@Override
 	public int getHandValue() {
 		int sum =0;
@@ -12,30 +13,19 @@ public class BlackJackHand extends Hand {
 		return sum;
 		
 		
-		
-//		
-//		Rank[] cards = Rank.values();
-//		int sum = 0;
-//		for (Rank rank : cards) {
-//			sum += rank.getValue();
-//		
-//		}
-//		return sum;
-		
 	}
-	public boolean isBlackJack(int[]playerTotal) {
+	public boolean isBlackJack(Hand hand) {
 		boolean isBj = false;
-		int[] playTot = playerTotal;
-		if(playTot[0] == 21) {
+		if(hand.getHandValue() == 21) {
 			isBj = true;
 			System.out.println("BlackJack!");
 		}
 		return isBj;
 	}
-	public boolean isBust(int[] playerTotal) {
+	public boolean isBust(Hand hand) {
 		boolean isBust = false;
-		int[] playTot = playerTotal;
-		if(playTot[0] > 21) {
+		
+		if(hand.getHandValue() > 21) {
 			isBust = true;
 			System.out.println("Bust!");
 		}

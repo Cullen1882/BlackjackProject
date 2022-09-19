@@ -10,11 +10,14 @@ import com.skilldistillery.blackjack.entities.Dealer;
 import com.skilldistillery.blackjack.entities.Deck;
 import com.skilldistillery.blackjack.entities.Hand;
 import com.skilldistillery.blackjack.entities.Player;
+import com.skilldistillery.blackjack.entities.Rank;
 
 public class BlackJackApp {
 	Scanner sc = new Scanner(System.in);
 	BlackJackHand bJh = new BlackJackHand();
-
+	Player dealer = new Dealer();
+	Player player = new Player("player");
+	Deck deck = new Deck();
 	public static void main(String[] args) {
 		BlackJackApp bJa = new BlackJackApp();
 
@@ -24,7 +27,7 @@ public class BlackJackApp {
 
 	public void play() {
 
-		System.out.println("Do you want to play a game of Black Jack?");
+		System.out.println("Do you want to play a game of Black Jack? YES or NO: ");
 		String userPlay = sc.next();
 		boolean play = true;
 		while (play) {
@@ -32,15 +35,13 @@ public class BlackJackApp {
 				play = false;
 
 			} else {
-				p1.clear();
-				d.clear();
 
 //			deal();
-				int[] playerTotal = deal();
+				deal();
 
-				playerChoice(playerTotal);
-				dealerPlay(playerTotal);
-				compare(playerTotal);
+				playerChoice();
+				dealerPlay();
+				compare();
 				
 			
 				System.out.println("Do you want to play again?");
@@ -48,91 +49,98 @@ public class BlackJackApp {
 				if (playAgain.equalsIgnoreCase("NO")) {
 					play = false;
 				}
+				else if (playAgain.equalsIgnoreCase("YES")) {
+					player.getHand().clear();
+					dealer.getHand().clear();
+					
+				}
 			}
 
 		}
 	}
 
 //	Scanner sc = new Scanner(System.in);
-	Deck deck = new Deck();
-	List<Card> p1 = new ArrayList<>();
-	List<Card> d = new ArrayList<>();
+//	Deck deck = new Deck();
+//	Hand new bj hand
+//	List<Card> p1 = new ArrayList<>();
+//	List<Card> d = new ArrayList<>();
 
-	public int[] deal() {
-		
-		Player dealer = new Dealer();
-		Player player = new Player();
+	public void deal() {
 //		bJh.clear();
-		int totalValuePlay = 0;
-		int totalValueDeal = 0;
+//		int totalValuePlay = 0;
+//		int totalValueDeal = 0;
 		deck.shuffleDeck();
 		for (int i = 0; i < 4; i++) {
 			Card p = deck.dealCard();
+//					((Dealer)dealer).dealCard(player);
 			if (i == 0 || i == 2) {
-				p1.add(p);
-				totalValuePlay += p.getValue();
-
+//				((Dealer) dealer).dealCard(player);
+				player.addCard(p);
+//				totalValuePlay += p.getValue();
+				
 			} else if (i == 1 || i == 3) {
+//				((Dealer) dealer).dealCard(dealer);
 
-				d.add(p);
-				totalValueDeal += p.getValue();
+				dealer.addCard(p);
+//				totalValueDeal += p.getValue();
 			}
 
 		}
-		System.out.println("Your hand is: \n" + p1 + " Hand total: " + totalValuePlay);
-		System.out.println("Dealer shows: \n" + d.get(1));
-		int[] handTotals = new int[2];
-		handTotals[0] = totalValuePlay;
-		handTotals[1] = totalValueDeal;
+		System.out.println("Your hand is: \n" + player.getHand() + " Hand total: " + player.getHand().getHandValue());
+		System.out.println("Dealer shows: \n" + dealer.getHand());
+//		int[] handTotals = new int[2];
+//		handTotals[0] = totalValuePlay;
+//		handTotals[1] = totalValueDeal;
 //		System.out.println(handTotals[0]);
 //		System.out.println(handTotals[1]);
-		return handTotals;
+//		return handTotals;
 	}
 
-	public int playerChoice(int[] playerTot) {
+	public void playerChoice() {
 		System.out.println("Do you want to Hit or Stand?");
 		String playerDec = sc.next();
-		int[] playerTotals = playerTot;
+//		int[] playerTotals = playerTot;
 		while (playerDec.equalsIgnoreCase("Hit")) {
 
-				Card p = deck.dealCard();
-				p1.add(p);
-				playerTotals[0] += p.getValue();
-				System.out.println("Your hand: " + p1 + playerTotals[0]);
+				Card p = ((Dealer)dealer).getDeck().dealCard();
+				player.addCard(p);
+//				playerTotals[0] += p.getValue();
+				System.out.println("Your hand: " + player.getHand());
 				
-			if(bJh.isBust(playerTotals)) {
+			if(bJh.isBust(player.getHand())) {
 				break;
-			}else if (bJh.isBlackJack(playerTotals)) {
+			}else if (bJh.isBlackJack(player.getHand())) {
 				break;
 			}
 			System.out.println("Do you want to Hit or Stand?");
 			playerDec = sc.next();
-		}return playerTotals[0];
+		}
+//		return playerTotals[0];
 	}
-	public int dealerPlay(int [] dealerTot) {
+	public void dealerPlay() {
 //		System.out.println("Dealer shows: " + dealerTotal[1]);
-		int [] dealerTotal = dealerTot;
-		while(dealerTotal[1] < 17) {
-			Card p = deck.dealCard();
-			d.add(p);
-			if (dealerTotal[1] > 21) {
+//		int [] dealerTotal = dealerTot;
+		while(dealer.getHand().getHandValue() < 17) {
+			Card p = ((Dealer)dealer).getDeck().dealCard();
+			dealer.addCard(p);
+			if (dealer.getHand().getHandValue() > 21) {
 				System.out.println("Dealer Busts");
 				break;
 			}
-			else if (dealerTotal[1] == 21) {
+			else if (dealer.getHand().getHandValue() == 21) {
 				System.out.println("Dealer has BlackJack");
 				break;
 			}
-			dealerTotal[1] += p.getValue();
-			System.out.println("Dealer shows: " + dealerTotal[1]);
+//			dealer.getHand().getHandValue() += p.getValue();
+			System.out.println("Dealer shows: " + dealer.getHand().getHandValue());
 			
-		}return dealerTotal[1];
+		}
 	}
-	public void compare(int[] totals) {
-		if(totals[0] > totals[1]) {
+	public void compare() {
+		if(player.getHand().getHandValue() > dealer.getHand().getHandValue()) {
 			System.out.println("You win");
 		}
-		else if (totals[0] < totals[1] && totals[1] < 22) {
+		else if (player.getHand().getHandValue() < dealer.getHand().getHandValue() && dealer.getHand().getHandValue() < 22) {
 			System.out.println("Dealer wins");
 		}
 		else {
